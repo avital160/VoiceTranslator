@@ -2,8 +2,6 @@ import pygame
 
 from Server import Email_Sender, Recorder, Translator
 
-from Server.opencamera import EmailUtils
-
 pygame.init()
 
 display_width = 800
@@ -93,9 +91,9 @@ def send_email_by_name(txt):
             return
         file_name += '.jpg'
         # print(file_name)
-        send_email = EmailUtils('Message from VoiceTranslator', name, msg, file_name, Email_Sender.contacts)
-        send_email.send_email_with_attachment()
-        translated = Translator.translate(msg, language)
+        # send_email = EmailUtils('Message from VoiceTranslator', name, msg, file_name, Email_Sender.contacts)
+        # send_email.send_email_with_attachment()
+        translated = Translator.translate_text(msg, language)
         Email_Sender.send_email(name, msg, language, translated)
 
 
