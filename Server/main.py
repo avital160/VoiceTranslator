@@ -1,16 +1,20 @@
+import logging
+
 import Email_Sender
 import Recorder
 import Translator
-from logger import Logger
 from opencamera import EmailUtils
-
 
 # from  tkinter import *
 
+logging.basicConfig(filename=f'logs.log',
+                    filemode='a',
+                    format='%(levelname)s %(asctime)s - %(message)s',
+                    level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
 
 def main():
-    log_helper = Logger()
-
     # secs = int(input('Enter time duration in seconds: '))
     # Recorder.record(secs)
     path = r'../out.wav'

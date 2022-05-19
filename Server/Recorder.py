@@ -1,10 +1,6 @@
 import sounddevice
 import speech_recognition as sr
 from scipy.io.wavfile import write
-from logger import Logger
-
-log_helper = Logger()
-
 
 def record(seconds: int) -> None:
     fs = 44100
@@ -26,5 +22,5 @@ def voice_to_text(voice_file_path: str) -> str:
         return s
     except:
         exception_msg = "error while trying to translate voice to tesxt from google"
-        log_helper.write_excetion_log(exception_msg)
+        # log_helper.write_excetion_log(exception_msg)
         return exception_msg
