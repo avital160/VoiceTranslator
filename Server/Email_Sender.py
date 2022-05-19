@@ -35,7 +35,6 @@ def create_mail(receiver_address: str, msg: str, lang: str, translated: str, fil
         with open(file_attachment_path, 'rb') as file:
             part.set_payload(file.read())
         encoders.encode_base64(part)
-        # payload.add_header('Content-Decomposition', 'attachment', filename=self.attach_file_name)
 
         part.add_header('Content-Disposition', 'attachment; filename={}'.format(Path(file_attachment_path).name))
         mail_content.attach(part)
