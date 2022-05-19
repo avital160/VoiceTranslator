@@ -1,6 +1,6 @@
 import pygame
 
-from Server import Email_Sender, Recorder, Translator
+from Server import email_sender, audio_actions, translator
 
 pygame.init()
 
