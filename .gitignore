@@ -1,4 +1,4 @@
 /secrets.py
 /.idea/*
-/out.wav
+*.wav
 *.log
