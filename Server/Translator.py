@@ -1,3 +1,5 @@
+import logging
+
 from googletrans import Translator
 
 LANGUAGES = {
@@ -109,16 +111,14 @@ LANGUAGES = {
     'zulu': 'zu'}
 
 
-def translate(text: str, language: str) -> str:
-    # initialize the Translator
+def translate_text(text: str, language: str) -> str:
     translator = Translator()
 
-    # text = input("Enter your Text: ")
-
     source_lan = 'en'
-    translated_to = LANGUAGES[language]  # hi is the code for Hindi Language
+    translated_to = LANGUAGES[language]
 
-    # translate text
-    translated_text = translator.translate(text, src=source_lan, dest=translated_to)
-
-    return translated_text.text
+    try:
+        translated_text = translator.translate(text, src=source_lan, dest=translated_to)
+        return translated_text.text
+    except Exception as ex:
+        logging.exception(f'{ex}')
