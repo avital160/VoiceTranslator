@@ -41,7 +41,7 @@ def send_file_via_socket(client_socket: socket.socket, file_path: str, remove_fi
         logger.exception(f'{ex}')
 
 
-def connect_and_send_wav_file(wav_path):
+def connect_and_send_wav_file(wav_path: str):
     client_socket = connect()
     if not client_socket:
         logger.info('client_socket is None')
