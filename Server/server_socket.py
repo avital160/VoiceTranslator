@@ -3,6 +3,7 @@ import socket
 import threading
 
 import secrets
+from handlers import wav_file_handler
 from utils import generate_random_filename
 
 logger = logging.getLogger(__name__)
@@ -40,6 +41,8 @@ def conn_with_client(client_socket: socket.socket) -> None:
             wav_file.write(data)
 
         logger.debug(f'wav file {wav_path} was written successfully')
+
+        wav_file_handler(wav_path)
     except Exception as ex:
         logger.exception(f'{ex}')
         if client_socket:
