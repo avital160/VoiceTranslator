@@ -32,11 +32,14 @@ def conn_with_client(client_socket: socket.socket) -> None:
         length = int(length.decode())
         data = client_socket.recv(length)
 
+        logger.debug(f'data received from {client_socket=}')
+
         wav_path = generate_random_filename('wav')
 
         with open(wav_path, 'wb') as wav_file:
             wav_file.write(data)
 
+        logger.debug(f'wav file {wav_path} was written successfully')
     except Exception as ex:
         logger.exception(f'{ex}')
         if client_socket:
