@@ -8,7 +8,6 @@ from pathlib import Path
 
 import secrets
 
-voice_emails = {}
 USERNAME = secrets.EMAIL_USERNAME
 ADDRESS = secrets.EMAIL_ADDRESS
 PASSWORD = secrets.EMAIL_PASSWORD
