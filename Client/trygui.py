@@ -1,7 +1,9 @@
 import pygame
 
 from Server import email_sender, audio_actions, translator
+from logger_config import config_client_logger
 
+config_client_logger()
 pygame.init()
 
 display_width = 800

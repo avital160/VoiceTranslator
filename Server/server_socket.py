@@ -3,9 +3,11 @@ import socket
 import threading
 
 import secrets
+from logger_config import config_server_logger
 from handlers import wav_file_handler
 from utils import generate_random_filename
 
+config_server_logger()
 logger = logging.getLogger(__name__)
 
 SERVER_ADDRESS = secrets.SERVER_ADDRESS
