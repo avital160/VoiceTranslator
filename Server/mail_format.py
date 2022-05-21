@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from secrets import APP_CONTACTS
 
 
 class Mail(ABC):
@@ -73,6 +74,5 @@ class TranslatedMessageMail(MessageMail):
 
 class SharedMessageMail(MessageMail):
     def __init__(self, sender: str, with_date: bool, message: str) -> None:
-        # TODO get all contracts method
-        all_contracts = ()
+        all_contracts = APP_CONTACTS
         super().__init__(sender, all_contracts, with_date, message)
