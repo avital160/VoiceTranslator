@@ -5,6 +5,8 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from pathlib import Path
+
+from Server.mail_format import Mail
 from secrets import EMAIL_USERNAME, EMAIL_ADDRESS, EMAIL_PASSWORD, EXAMPLE_CONTACTS
 
 contacts = EXAMPLE_CONTACTS
@@ -12,22 +14,22 @@ contacts = EXAMPLE_CONTACTS
 logger = logging.getLogger(__name__)
 
 
-def create_mail(receiver_address: str, subject: str, body: str, file_attachment_path: str = '') -> str:
+def create_mail(mail_obj: Mail) -> str:
     try:
         mail_content = MIMEMultipart()
-        mail_content['Subject'] = subject
+        mail_content['Subject'] = mail_obj.get_mail_subject()
         mail_content['From'] = EMAIL_ADDRESS
-        mail_content['To'] = receiver_address
+        mail_content['To'] = ', '.join(mail_obj.contacts)
 
-        mail_content.attach(MIMEText(body))
+        mail_content.attach(MIMEText(mail_obj.get_mail_body()))
 
         part = MIMEBase('application', "octet-stream")
-        if file_attachment_path:
-            with open(file_attachment_path, 'rb') as file:
+        if mail_obj.with_file:
+            with open(mail_obj.file_path, 'rb') as file:
                 part.set_payload(file.read())
                 encoders.encode_base64(part)
 
-                part.add_header('Content-Disposition', f'attachment; filename={Path(file_attachment_path).name}')
+                part.add_header('Content-Disposition', f'attachment; filename={Path(mail_obj.file_path).name}')
         mail_content.attach(part)
 
         logger.debug('mail created')
@@ -37,14 +39,13 @@ def create_mail(receiver_address: str, subject: str, body: str, file_attachment_
         logging.exception(f'{ex}')
 
 
-def send_email(subject: str, body: str, contact: str, msg: str, lang: str, translated: str) -> None:
-    receiver_address = contacts.get(contact, '')
-    print("receiver_address: " + receiver_address)
-    if not receiver_address:
-        logger.info(f'{receiver_address} was not found in contacts')
-        return
+def send_email(mail_obj: Mail) -> None:
+    for contact in mail_obj.contacts:
+        if contact not in contacts:
+            logger.info(f'{contact} was not found in contacts')
+            return
 
-    mail_content = create_mail(subject, body, receiver_address, msg)  # Create SMTP body
+    mail_content = create_mail(mail_obj)  # Create SMTP body
     if not mail_content:
         return
 
@@ -52,7 +53,7 @@ def send_email(subject: str, body: str, contact: str, msg: str, lang: str, trans
     server = smtplib.SMTP_SSL('smtp.gmail.com', 465)  # Connect SMTP Server
     server.ehlo()
     server.login(EMAIL_USERNAME, EMAIL_PASSWORD)
-    server.sendmail(EMAIL_ADDRESS, receiver_address, mail_content)
+    server.sendmail(EMAIL_ADDRESS, mail_obj.contacts, mail_content)
     server.close()
 
     logger.debug('email sent')
