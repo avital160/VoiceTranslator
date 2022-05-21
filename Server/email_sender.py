@@ -7,9 +7,7 @@ from email.mime.text import MIMEText
 from pathlib import Path
 
 from Server.mail_format import Mail
-from secrets import EMAIL_USERNAME, EMAIL_ADDRESS, EMAIL_PASSWORD, EXAMPLE_CONTACTS
-
-contacts = EXAMPLE_CONTACTS
+from secrets import EMAIL_USERNAME, EMAIL_ADDRESS, EMAIL_PASSWORD, APP_CONTACTS
 
 logger = logging.getLogger(__name__)
 
@@ -41,7 +39,7 @@ def create_mail(mail_obj: Mail) -> str:
 
 def send_email(mail_obj: Mail) -> None:
     for contact in mail_obj.contacts:
-        if contact not in contacts:
+        if contact not in APP_CONTACTS:
             logger.info(f'{contact} was not found in contacts')
             return
 
