@@ -46,3 +46,11 @@ def conn_with_client(client_socket: socket.socket) -> None:
         logger.exception(f'{ex}')
         if client_socket:
             client_socket.close()
+
+
+def main():
+    start_server()
+
+
+if __name__ == '__main__':
+    main()
