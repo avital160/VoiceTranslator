@@ -2,19 +2,16 @@ import logging
 import os
 import socket
 
-import secrets
+from secrets import SERVER_ADDRESS, SERVER_PORT
 
 logger = logging.getLogger(__name__)
-
-SERVER_ADDRESS = secrets.SERVER_ADDRESS
-PORT = secrets.SERVER_PORT
 
 
 def connect() -> socket.socket:
     client_socket = None
     try:
         client_socket = socket.socket()
-        client_socket.connect((SERVER_ADDRESS, PORT))
+        client_socket.connect((SERVER_ADDRESS, SERVER_PORT))
         logger.debug(f'connected successfully {client_socket=}')
         return client_socket
     except Exception as ex:

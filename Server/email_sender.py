@@ -5,16 +5,12 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from pathlib import Path
+from secrets import EMAIL_USERNAME, EMAIL_ADDRESS, EMAIL_PASSWORD, EXAMPLE_CONTACTS
 
-import secrets
-
-USERNAME = secrets.EMAIL_USERNAME
-ADDRESS = secrets.EMAIL_ADDRESS
-PASSWORD = secrets.EMAIL_PASSWORD
 SUBJECT = 'Voice Translator New Message!'
 BODY = 'Message Received: {}\n' \
        'Translation in {}: {}'
-contacts = secrets.EXAMPLE_CONTACTS
+contacts = EXAMPLE_CONTACTS
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +21,7 @@ def create_mail(receiver_address: str, msg: str, lang: str, translated: str, fil
 
         mail_content = MIMEMultipart()
         mail_content['Subject'] = SUBJECT
-        mail_content['From'] = ADDRESS
+        mail_content['From'] = EMAIL_ADDRESS
         mail_content['To'] = receiver_address
 
         mail_content.attach(MIMEText(my_body))
@@ -59,8 +55,8 @@ def send_email(contact: str, msg: str, lang: str, translated: str) -> None:
     # Send through SMTP Gmail server
     server = smtplib.SMTP_SSL('smtp.gmail.com', 465)  # Connect SMTP Server
     server.ehlo()
-    server.login(USERNAME, PASSWORD)
-    server.sendmail(ADDRESS, receiver_address, mail_content)
+    server.login(EMAIL_USERNAME, EMAIL_PASSWORD)
+    server.sendmail(EMAIL_ADDRESS, receiver_address, mail_content)
     server.close()
 
     logger.debug('email sent')

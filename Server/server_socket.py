@@ -2,7 +2,7 @@ import logging
 import socket
 import threading
 
-import secrets
+from secrets import SERVER_ADDRESS, SERVER_PORT
 from logger_config import config_server_logger
 from handlers import wav_file_handler
 from utils import generate_random_filename
@@ -10,15 +10,12 @@ from utils import generate_random_filename
 config_server_logger()
 logger = logging.getLogger(__name__)
 
-SERVER_ADDRESS = secrets.SERVER_ADDRESS
-PORT = secrets.SERVER_PORT
-
 
 def start_server() -> None:
     server_socket = None
     try:
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server_socket.bind((SERVER_ADDRESS, PORT))
+        server_socket.bind((SERVER_ADDRESS, SERVER_PORT))
         server_socket.listen(5)
         while True:
             client_socket, address = server_socket.accept()
