@@ -1,3 +1,3 @@
-def wav_file_handler(wav_path: str) -> None:
+def wav_file_handler(wav_path: str) -> str:
     # TODO logic
-    pass
+    return 'recording content is returned'

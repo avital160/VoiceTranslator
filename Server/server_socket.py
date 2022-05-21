@@ -1,4 +1,5 @@
 import logging
+import os
 import socket
 import threading
 
@@ -41,7 +42,15 @@ def conn_with_client(client_socket: socket.socket) -> None:
 
         logger.debug(f'wav file {wav_path} was written successfully')
 
-        wav_file_handler(wav_path)
+        recording_content = wav_file_handler(wav_path)
+
+        os.remove(wav_path)
+
+        length = (str(len(recording_content))).zfill(4)
+        client_socket.send(length.encode())
+
+        client_socket.send(recording_content.encode())
+
     except Exception as ex:
         logger.exception(f'{ex}')
         if client_socket:

@@ -20,7 +20,7 @@ def connect() -> socket.socket:
             client_socket.close()
 
 
-def send_file_via_socket(client_socket: socket.socket, file_path: str, remove_file_after_sending: bool = True) -> None:
+def send_file_via_socket(client_socket: socket.socket, file_path: str, remove_file_after_sending: bool = True) -> str:
     try:
         with open(file_path, 'rb') as wav_file:
             data = wav_file.read()
@@ -34,14 +34,18 @@ def send_file_via_socket(client_socket: socket.socket, file_path: str, remove_fi
         client_socket.send(data)
 
         logger.debug(f'{file_path=} sent')
+
+        length = client_socket.recv(4)
+        length = int(length.decode())
+        recording_content = client_socket.recv(length).decode()
+        return recording_content
     except Exception as ex:
         logger.exception(f'{ex}')
 
 
-def connect_and_send_wav_file(wav_path: str):
+def connect_and_send_wav_file(wav_path: str) -> str:
     client_socket = connect()
-    if not client_socket:
-        logger.info('client_socket is None')
-        return
-
-    send_file_via_socket(client_socket, wav_path)
+    if client_socket:
+        recording_content = send_file_via_socket(client_socket, wav_path)
+        return recording_content
+    logger.info('client_socket is None')
