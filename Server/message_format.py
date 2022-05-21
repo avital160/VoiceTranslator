@@ -2,10 +2,12 @@ from abc import ABC, abstractmethod
 
 
 class Mail(ABC):
-    contacts: tuple = ()
-    add_date: bool = False
+    sender: str
+    contacts: tuple
+    add_date: bool
 
-    def __init__(self, contacts: tuple, add_date: bool) -> None:
+    def __init__(self, sender: str, contacts: tuple, add_date: bool) -> None:
+        self.sender = sender
         self.contacts = contacts
         self.add_date = add_date
 
@@ -19,10 +21,10 @@ class Mail(ABC):
 
 
 class FileMail(Mail):
-    file_path: str = ''
+    file_path: str
 
-    def __init__(self, contacts: tuple, add_date: bool, file_path: str) -> None:
-        super().__init__(contacts, add_date)
+    def __init__(self, sender: str, contacts: tuple, add_date: bool, file_path: str) -> None:
+        super().__init__(sender, contacts, add_date)
         self.file_path = file_path
 
     def get_mail_subject(self):
@@ -33,10 +35,10 @@ class FileMail(Mail):
 
 
 class MessageMail(Mail):
-    message: str = ''
+    message: str
 
-    def __init__(self, contacts: tuple, add_date: bool, message: str) -> None:
-        super().__init__(contacts, add_date)
+    def __init__(self, sender: str, contacts: tuple, add_date: bool, message: str) -> None:
+        super().__init__(sender, contacts, add_date)
         self.message = message
 
     def get_mail_subject(self):
@@ -47,7 +49,7 @@ class MessageMail(Mail):
 
 
 class SharedMessageMail(MessageMail):
-    def __init__(self, add_date: bool, message: str) -> None:
+    def __init__(self, sender: str, add_date: bool, message: str) -> None:
         # TODO get all contracts method
         all_contracts = ()
-        super().__init__(all_contracts, add_date, message)
+        super().__init__(sender, all_contracts, add_date, message)
