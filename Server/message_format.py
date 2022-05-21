@@ -11,6 +11,9 @@ class Mail(ABC):
         self.contacts = contacts
         self.add_date = add_date
 
+    def __str__(self):
+        return f'{self.sender=} {self.contacts=} {self.add_date=}'
+
     @abstractmethod
     def get_mail_subject(self):
         raise NotImplementedError
@@ -27,6 +30,9 @@ class FileMail(Mail):
         super().__init__(sender, contacts, add_date)
         self.file_path = file_path
 
+    def __str__(self):
+        return f'{self.sender=} {self.contacts=} {self.add_date=} {self.file_path=}'
+
     def get_mail_subject(self):
         pass
 
@@ -41,11 +47,25 @@ class MessageMail(Mail):
         super().__init__(sender, contacts, add_date)
         self.message = message
 
+    def __str__(self):
+        return f'{self.sender=} {self.contacts=} {self.add_date=} {self.message=}'
+
     def get_mail_subject(self):
         pass
 
     def get_mail_body(self):
         pass
+
+
+class TranslatedMessageMail(MessageMail):
+    translation_language: str
+
+    def __init__(self, sender: str, contacts: tuple, add_date: bool, message: str, translation_language: str) -> None:
+        super().__init__(sender, contacts, add_date, message)
+        self.translation_language = translation_language
+
+    def __str__(self):
+        return f'{self.sender=} {self.contacts=} {self.add_date=} {self.message=} {self.translation_language}'
 
 
 class SharedMessageMail(MessageMail):
