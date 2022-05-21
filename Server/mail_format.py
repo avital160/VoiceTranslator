@@ -37,9 +37,11 @@ class FileMail(Mail):
         return f'{self.sender=} {self.contacts=} {self.with_date=} {self.file_path=}'
 
     def get_mail_subject(self):
+        # TODO override
         pass
 
     def get_mail_body(self):
+        # TODO override
         pass
 
 
@@ -54,9 +56,11 @@ class MessageMail(Mail):
         return f'{self.sender=} {self.contacts=} {self.with_date=} {self.message=}'
 
     def get_mail_subject(self):
+        # TODO override
         pass
 
     def get_mail_body(self):
+        # TODO override
         pass
 
 
@@ -70,9 +74,25 @@ class TranslatedMessageMail(MessageMail):
     def __str__(self):
         return f'{self.sender=} {self.contacts=} {self.with_date=} {self.message=} {self.translation_language}'
 
+    def get_mail_subject(self):
+        # TODO override
+        pass
+
+    def get_mail_body(self):
+        # TODO override
+        pass
+
 
 class SharedMessageMail(MessageMail):
     def __init__(self, sender: str, with_date: bool, message: str) -> None:
         # TODO get all contracts method
         all_contracts = ()
         super().__init__(sender, all_contracts, with_date, message)
+
+    def get_mail_subject(self):
+        # TODO override
+        pass
+
+    def get_mail_body(self):
+        # TODO override
+        pass
