@@ -22,7 +22,7 @@ def create_mail(mail_obj: Mail) -> str:
         mail_content.attach(MIMEText(mail_obj.get_mail_body()))
 
         part = MIMEBase('application', "octet-stream")
-        if mail_obj.with_file:
+        if hasattr(mail_obj, 'file_path'):
             with open(mail_obj.file_path, 'rb') as file:
                 part.set_payload(file.read())
                 encoders.encode_base64(part)

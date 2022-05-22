@@ -6,13 +6,11 @@ class Mail(ABC):
     sender: str
     contacts: tuple
     with_date: bool
-    with_file: bool
 
     def __init__(self, sender: str, contacts: tuple, with_date: bool) -> None:
         self.sender = sender
         self.contacts = contacts
         self.with_date = with_date
-        self.with_file = False
 
     def __str__(self):
         return f'{self.sender=} {self.contacts=} {self.with_date=}'
@@ -31,7 +29,6 @@ class FileMail(Mail):
 
     def __init__(self, sender: str, contacts: tuple, with_date: bool, file_path: str) -> None:
         super().__init__(sender, contacts, with_date)
-        self.with_file = True
         self.file_path = file_path
 
     def __str__(self):
