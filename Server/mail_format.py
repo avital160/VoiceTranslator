@@ -1,3 +1,4 @@
+import datetime
 from abc import ABC, abstractmethod
 from secrets import APP_CONTACTS
 
@@ -23,6 +24,12 @@ class Mail(ABC):
     def get_mail_body(self):
         raise NotImplementedError
 
+    def get_date_str_for_mail(self):
+        if self.with_date:
+            return f'Date: {datetime.datetime.now().strftime("%d/%m/%Y, %H:%M:%S")}\n'
+        else:
+            return ''
+
 
 class FileMail(Mail):
     file_path: str
@@ -35,12 +42,10 @@ class FileMail(Mail):
         return f'{self.sender=} {self.contacts=} {self.with_date=} {self.file_path=}'
 
     def get_mail_subject(self):
-        # TODO override
-        pass
+        return f'{self.sender} sent you a file via VoiceTranslator!'
 
     def get_mail_body(self):
-        # TODO override
-        pass
+        return self.get_date_str_for_mail()
 
 
 class MessageMail(Mail):
@@ -54,31 +59,30 @@ class MessageMail(Mail):
         return f'{self.sender=} {self.contacts=} {self.with_date=} {self.message=}'
 
     def get_mail_subject(self):
-        # TODO override
-        pass
+        return f'{self.sender} sent you a message via VoiceTranslator!'
 
     def get_mail_body(self):
-        # TODO override
-        pass
+        return f'{self.get_date_str_for_mail()}' \
+               f'{self.message}'
 
 
 class TranslatedMessageMail(MessageMail):
-    translation_language: str
+    translated_message: str
 
-    def __init__(self, sender: str, contacts: tuple, with_date: bool, message: str, translation_language: str) -> None:
+    def __init__(self, sender: str, contacts: tuple, with_date: bool, message: str, translated_message: str) -> None:
         super().__init__(sender, contacts, with_date, message)
-        self.translation_language = translation_language
+        self.translated_message = translated_message
 
     def __str__(self):
-        return f'{self.sender=} {self.contacts=} {self.with_date=} {self.message=} {self.translation_language}'
+        return f'{self.sender=} {self.contacts=} {self.with_date=} {self.message=} {self.translated_message}'
 
     def get_mail_subject(self):
-        # TODO override
-        pass
+        return f'{self.sender} sent you a translated message via VoiceTranslator!'
 
     def get_mail_body(self):
-        # TODO override
-        pass
+        return f'{self.get_date_str_for_mail()}' \
+               f'Original Message: {self.message}\n' \
+               f'Translated Message: {self.translated_message}'
 
 
 class SharedMessageMail(MessageMail):
@@ -87,9 +91,4 @@ class SharedMessageMail(MessageMail):
         super().__init__(sender, all_contracts, with_date, message)
 
     def get_mail_subject(self):
-        # TODO override
-        pass
-
-    def get_mail_body(self):
-        # TODO override
-        pass
+        return f'{self.sender} sent a message to everyone via VoiceTranslator!'
