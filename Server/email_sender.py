@@ -14,6 +14,8 @@ logger = logging.getLogger(__name__)
 
 def create_mail(mail_obj: Mail) -> str:
     try:
+        logger.debug(f'starting create mail with obj type {type(mail_obj)}: {mail_obj}')
+
         mail_content = MIMEMultipart()
         mail_content['Subject'] = mail_obj.get_mail_subject()
         mail_content['From'] = EMAIL_ADDRESS

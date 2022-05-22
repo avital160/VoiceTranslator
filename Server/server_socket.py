@@ -18,11 +18,13 @@ def start_server() -> None:
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server_socket.bind((SERVER_ADDRESS, SERVER_PORT))
         server_socket.listen(5)
+        logger.info('server is up')
         while True:
             client_socket, address = server_socket.accept()
             threading.Thread(target=conn_with_client, args=[client_socket]).start()
 
-    except:
+    except Exception as ex:
+        logger.exception(f'{ex}')
         if server_socket:
             server_socket.close()
 
@@ -50,6 +52,8 @@ def conn_with_client(client_socket: socket.socket) -> None:
         client_socket.send(length.encode())
 
         client_socket.send(recording_content.encode())
+
+        logger.debug(f'text was sent back to {client_socket}')
 
     except Exception as ex:
         logger.exception(f'{ex}')

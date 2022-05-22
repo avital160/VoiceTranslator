@@ -2,6 +2,8 @@ import logging
 
 from googletrans import Translator
 
+logger = logging.getLogger(__name__)
+
 LANGUAGES = {
     'afrikaans': 'af',
     'albanian': 'sq',
@@ -118,7 +120,8 @@ def translate_text(text: str, language: str) -> str:
     translated_to = LANGUAGES[language]
 
     try:
-        translated_text = translator.translate(text, src=source_lan, dest=translated_to)
-        return translated_text.text
+        translated_text = translator.translate(text, src=source_lan, dest=translated_to).text
+        logger.debug(f'text translated successfully: {text=} {language=} {translated_text=}')
+        return translated_text
     except Exception as ex:
         logging.exception(f'{ex}')

@@ -16,6 +16,7 @@ SCALE_FACTOR = ctypes.windll.shcore.GetScaleFactorForDevice(0) / 100
 class VoiceTranslatorMainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
+        logger.info('client is up')
         if not self.objectName():
             self.setObjectName('MainWindow')
         WIDTH = 400
@@ -72,6 +73,7 @@ class VoiceTranslatorMainWindow(QtWidgets.QMainWindow):
         QtCore.QMetaObject.connectSlotsByName(self)
 
     def start_stop_recording(self):
+        logger.debug('speaker button pressed')
         if self.threadTimer.isActive():
             self.threadTimer.stop()
             self.recordTimeLabel.setText('00:00')
