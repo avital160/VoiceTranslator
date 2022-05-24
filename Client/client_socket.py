@@ -46,6 +46,6 @@ def send_file_via_socket(client_socket: socket.socket, file_path: str, remove_fi
 def connect_and_send_wav_file(wav_path: str) -> str:
     client_socket = connect()
     if client_socket:
-        recording_content = send_file_via_socket(client_socket, wav_path)
+        recording_content = send_file_via_socket(client_socket, wav_path, remove_file_after_sending=False)
         return recording_content
     logger.info('client_socket is None')
