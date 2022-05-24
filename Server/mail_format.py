@@ -74,7 +74,7 @@ class TranslatedMessageMail(MessageMail):
         self.translated_message = translated_message
 
     def __str__(self):
-        return f'{self.sender=} {self.contacts=} {self.with_date=} {self.message=} {self.translated_message}'
+        return f'{self.sender=} {self.contacts=} {self.with_date=} {self.message=} {self.translated_message=}'
 
     def get_mail_subject(self):
         return f'{self.sender} sent you a translated message via VoiceTranslator!'
