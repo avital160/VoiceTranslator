@@ -116,11 +116,11 @@ LANGUAGES = {
 def translate_text(text: str, language: str) -> str:
     translator = Translator()
 
-    source_lan = 'en'
+    source_language = 'en'
     translated_to = LANGUAGES[language]
 
     try:
-        translated_text = translator.translate(text, src=source_lan, dest=translated_to).text
+        translated_text = translator.translate(text, src=source_language, dest=translated_to).text
         logger.debug(f'text translated successfully: {text=} {language=} {translated_text=}')
         return translated_text
     except Exception as ex:
