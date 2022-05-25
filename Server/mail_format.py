@@ -59,14 +59,18 @@ class MessageMail(Mail):
     def get_correct_object(sender: str, text: str):
         try:
             assert text
-            words = text.split()
-            assert words[0] == 'send'
-            with_date = ' '.join(words[-2:]) == 'with date'
-            to_index = words.index('to')
-            contact = words[to_index + 1]
-            assert ' '.join(words[to_index + 1:]) not in['with date',""]
+            if text.endswith('with date'):
+                send, *message, to, contact = text.split()[:-2]
+                with_date = True
+            else:
+                send, *message, to, contact = text.split()
+                with_date = False
+            message = ' '.join(message)
+            assert send == 'send'
+            assert message
+            assert to == 'to'
+            assert contact
             contacts = (contact,)
-            message = ' '.join(words[1:to_index])
             return MessageMail(sender, contacts, with_date, message)
         except:
             return None
