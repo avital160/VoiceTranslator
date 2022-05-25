@@ -77,7 +77,7 @@ class MessageMail(Mail):
             return None
 
 
-# send {message} to {contact} in {language} with data (optional)
+# send {message} to {contact} in {language} with date (optional)
 class TranslatedMessageMail(MessageMail):
     translated_message: str
 
