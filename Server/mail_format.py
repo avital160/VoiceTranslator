@@ -1,5 +1,6 @@
 import datetime
 from abc import ABC, abstractmethod
+from Server.translator import translate_text
 from secrets import APP_CONTACTS
 
 
@@ -80,9 +81,9 @@ class MessageMail(Mail):
 class TranslatedMessageMail(MessageMail):
     translated_message: str
 
-    def __init__(self, sender: str, contacts: tuple, with_date: bool, message: str, translated_message: str) -> None:
+    def __init__(self, sender: str, contacts: tuple, with_date: bool, message: str, translation_language: str) -> None:
         super().__init__(sender, contacts, with_date, message)
-        self.translated_message = translated_message
+        self.translated_message = translate_text(self.message, translation_language)
 
     def __str__(self):
         return f'{self.sender=} {self.contacts=} {self.with_date=} {self.message=} {self.translated_message=}'
