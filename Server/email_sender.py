@@ -19,7 +19,7 @@ def create_mail(mail_obj: Mail) -> str:
         mail_content = MIMEMultipart()
         mail_content['Subject'] = mail_obj.get_mail_subject()
         mail_content['From'] = EMAIL_ADDRESS
-        mail_content['To'] = ', '.join([APP_CONTACTS.get(contact,"") for contact in mail_obj.contacts])
+        mail_content['To'] = ', '.join([APP_CONTACTS.get(contact, '') for contact in mail_obj.contacts])
 
         mail_content.attach(MIMEText(mail_obj.get_mail_body()))
 
@@ -43,7 +43,7 @@ def send_email(mail_obj: Mail) -> None:
     for contact in mail_obj.contacts:
         if contact not in APP_CONTACTS:
             logger.info(f'{contact} was not found in contacts')
-            return
+            continue
 
     mail_content = create_mail(mail_obj)  # Create SMTP body
     if not mail_content:
@@ -53,7 +53,7 @@ def send_email(mail_obj: Mail) -> None:
     server = smtplib.SMTP_SSL('smtp.gmail.com', 465)  # Connect SMTP Server
     server.ehlo()
     server.login(EMAIL_USERNAME, EMAIL_PASSWORD)
-    server.sendmail(EMAIL_ADDRESS,[APP_CONTACTS.get(contact,"") for contact in mail_obj.contacts], mail_content)
+    server.sendmail(EMAIL_ADDRESS, [APP_CONTACTS.get(contact, '') for contact in mail_obj.contacts], mail_content)
     server.close()
 
     logger.debug('email sent')
