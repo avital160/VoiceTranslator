@@ -68,9 +68,9 @@ class MessageMail(Mail):
                 with_date = False
             message = ' '.join(message)
             assert send == 'send'
-            assert message
+            assert not message.startswith('file')
             assert to == 'to'
-            assert contact
+            assert contact != 'everybody'
             contacts = (contact,)
             return MessageMail(sender, contacts, with_date, message)
         except:
@@ -108,9 +108,9 @@ class TranslatedMessageMail(MessageMail):
                 with_date = False
             message = ' '.join(message)
             assert send == 'send'
-            assert message
+            assert not message.startswith('file')
             assert to == 'to'
-            assert contact
+            assert contact != 'everybody'
             contacts = (contact,)
             assert _in == 'in'
             assert translation_language in LANGUAGES
@@ -140,7 +140,7 @@ class SharedMessageMail(MessageMail):
                 with_date = False
             message = ' '.join(message)
             assert send == 'send'
-            assert message
+            assert not message.startswith('file')
             assert to == 'to'
             assert everybody == 'everybody'
             return SharedMessageMail(sender, with_date, message)
@@ -178,7 +178,7 @@ class FileMail(Mail):
             assert send == 'send'
             assert filename
             assert to == 'to'
-            assert contact
+            assert contact != 'everybody'
             contacts = (contact,)
             return FileMail(sender, contacts, with_date, filename)
         except:
@@ -208,6 +208,6 @@ class SharedFileMail(FileMail):
             assert filename
             assert to == 'to'
             assert everybody == 'everybody'
-            return FileMail(sender, with_date, filename)
+            return SharedFileMail(sender, with_date, filename)
         except:
             return None

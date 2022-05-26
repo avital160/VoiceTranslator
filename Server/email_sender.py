@@ -24,12 +24,12 @@ def create_mail(mail_obj: Mail) -> str:
         mail_content.attach(MIMEText(mail_obj.get_mail_body()))
 
         part = MIMEBase('application', "octet-stream")
-        if hasattr(mail_obj, 'file_path'):
-            with open(mail_obj.file_path, 'rb') as file:
+        if hasattr(mail_obj, 'filename'):
+            with open(mail_obj.filename, 'rb') as file:
                 part.set_payload(file.read())
                 encoders.encode_base64(part)
 
-                part.add_header('Content-Disposition', f'attachment; filename={Path(mail_obj.file_path).name}')
+                part.add_header('Content-Disposition', f'attachment; filename={Path(mail_obj.filename).name}')
         mail_content.attach(part)
 
         logger.debug('mail created')
