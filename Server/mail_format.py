@@ -1,6 +1,6 @@
 import datetime
 from abc import ABC, abstractmethod
-from Server.translator import translate_text
+from translator import translate_text
 from secrets import APP_CONTACTS
 from translator import LANGUAGES
 

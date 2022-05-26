@@ -6,7 +6,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from pathlib import Path
 
-from Server.mail_format import Mail
+from mail_format import Mail
 from secrets import EMAIL_USERNAME, EMAIL_ADDRESS, EMAIL_PASSWORD, APP_CONTACTS
 
 logger = logging.getLogger(__name__)
