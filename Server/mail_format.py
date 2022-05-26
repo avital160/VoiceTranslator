@@ -2,9 +2,9 @@ import datetime
 from abc import ABC, abstractmethod
 from Server.translator import translate_text
 from secrets import APP_CONTACTS
+from translator import LANGUAGES
 
 
-# TODO get_correct_object should return the object of the current class and validate with check the correct format
 class Mail(ABC):
     sender: str
     contacts: tuple
@@ -98,9 +98,23 @@ class TranslatedMessageMail(MessageMail):
 
     @staticmethod
     def get_correct_object(sender: str, text: str):
-        #fixme here
         try:
-            pass
+            assert text
+            if text.endswith('with date'):
+                send, *message, to, contact, _in, translation_language = text.split()[:-2]
+                with_date = True
+            else:
+                send, *message, to, contact, _in, translation_language = text.split()
+                with_date = False
+            message = ' '.join(message)
+            assert send == 'send'
+            assert message
+            assert to == 'to'
+            assert contact
+            contacts = (contact,)
+            assert _in == 'in'
+            assert translation_language in LANGUAGES
+            return TranslatedMessageMail(sender, contacts, with_date, message, translation_language)
         except:
             return None
 
