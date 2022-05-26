@@ -130,23 +130,34 @@ class SharedMessageMail(MessageMail):
 
     @staticmethod
     def get_correct_object(sender: str, text: str):
-        #fixme here
         try:
-            pass
+            assert text
+            if text.endswith('with date'):
+                send, *message, to, everybody = text.split()[:-2]
+                with_date = True
+            else:
+                send, *message, to, everybody = text.split()
+                with_date = False
+            message = ' '.join(message)
+            assert send == 'send'
+            assert message
+            assert to == 'to'
+            assert everybody == 'everybody'
+            return SharedMessageMail(sender, with_date, message)
         except:
             return None
 
 
 # send file {filename} to {contact} with date
 class FileMail(Mail):
-    file_path: str
+    filename: str
 
-    def __init__(self, sender: str, contacts: tuple, with_date: bool, file_path: str) -> None:
+    def __init__(self, sender: str, contacts: tuple, with_date: bool, filename: str) -> None:
         super().__init__(sender, contacts, with_date)
-        self.file_path = file_path
+        self.filename = filename + '.txt'
 
     def __str__(self):
-        return f'{self.sender=} {self.contacts=} {self.with_date=} {self.file_path=}'
+        return f'{self.sender=} {self.contacts=} {self.with_date=} {self.filename=}'
 
     def get_mail_subject(self) -> str:
         return f'{self.sender} sent you a file via VoiceTranslator!'
@@ -156,26 +167,47 @@ class FileMail(Mail):
 
     @staticmethod
     def get_correct_object(sender: str, text: str):
-        #fixme here
         try:
-            pass
+            assert text
+            if text.endswith('with date'):
+                send, file, filename, to, contact = text.split()[:-2]
+                with_date = True
+            else:
+                send, file, filename, to, contact = text.split()
+                with_date = False
+            assert send == 'send'
+            assert filename
+            assert to == 'to'
+            assert contact
+            contacts = (contact,)
+            return FileMail(sender, contacts, with_date, filename)
         except:
             return None
 
 
 # send file {filename} to everybody with date
 class SharedFileMail(FileMail):
-    def __init__(self, sender: str, with_date: bool, file_path: str) -> None:
+    def __init__(self, sender: str, with_date: bool, filename: str) -> None:
         all_contracts = APP_CONTACTS
-        super().__init__(sender, all_contracts, with_date, file_path)
+        super().__init__(sender, all_contracts, with_date, filename)
 
     def get_mail_subject(self) -> str:
         return f'{self.sender} sent a file to everyone via VoiceTranslator!'
 
     @staticmethod
     def get_correct_object(sender: str, text: str):
-        #fixme here
         try:
-            pass
+            assert text
+            if text.endswith('with date'):
+                send, file, filename, to, everybody = text.split()[:-2]
+                with_date = True
+            else:
+                send, file, filename, to, everybody = text.split()
+                with_date = False
+            assert send == 'send'
+            assert filename
+            assert to == 'to'
+            assert everybody == 'everybody'
+            return FileMail(sender, with_date, filename)
         except:
             return None
