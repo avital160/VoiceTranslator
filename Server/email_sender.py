@@ -7,7 +7,7 @@ from email.mime.text import MIMEText
 from pathlib import Path
 
 from mail_format import Mail
-from secrets import EMAIL_USERNAME, EMAIL_ADDRESS, EMAIL_PASSWORD, APP_CONTACTS
+from secrets import EMAIL_USERNAME, EMAIL_ADDRESS, EMAIL_PASSWORD, APP_CONTACTS, SMTP_SERVER_ADDRESS, SMTP_SERVER_PORT
 
 logger = logging.getLogger(__name__)
 
@@ -49,11 +49,15 @@ def send_email(mail_obj: Mail) -> None:
     if not mail_content:
         return
 
+    contacts = [APP_CONTACTS.get(contact) for contact in mail_obj.contacts if contact is not None]
+    if not contacts:
+        return
+
     # Send through SMTP Gmail server
-    server = smtplib.SMTP_SSL('smtp.gmail.com', 465)  # Connect SMTP Server
+    server = smtplib.SMTP_SSL(SMTP_SERVER_ADDRESS, SMTP_SERVER_PORT)  # Connect SMTP Server
     server.ehlo()
     server.login(EMAIL_USERNAME, EMAIL_PASSWORD)
-    server.sendmail(EMAIL_ADDRESS, [APP_CONTACTS.get(contact, '') for contact in mail_obj.contacts], mail_content)
+    server.sendmail(EMAIL_ADDRESS, contacts, mail_content)
     server.close()
 
     logger.debug('email sent')

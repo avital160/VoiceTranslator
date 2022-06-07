@@ -6,11 +6,13 @@ from email_sender import send_email
 
 def wav_file_handler(wav_path: str) -> str:
     text_from_voice = voice_to_text(wav_path)
-    print(text_from_voice)
     sender = SENDER
     mail_obj = mail_object_from_plain_text(sender, text_from_voice)
-    send_email(mail_obj)
-    return text_from_voice
+    if mail_obj:
+        send_email(mail_obj)
+        return text_from_voice
+    else:
+        return '***Your message is not in right format***'
 
 
 def mail_object_from_plain_text(sender: str, text: str) -> Mail:

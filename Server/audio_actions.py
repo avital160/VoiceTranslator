@@ -13,6 +13,6 @@ def voice_to_text(voice_file_path: str) -> str:
             logger.debug(f'{voice_file_path=} processing started')
             audio = recognizer.record(source)
         text = recognizer.recognize_google(audio)
-        return text
+        return text.lower()
     except Exception as ex:
         logger.exception(f'{ex}')
