@@ -45,12 +45,12 @@ def send_email(mail_obj: Mail) -> None:
             logger.info(f'{contact} was not found in contacts')
             continue
 
-    mail_content = create_mail(mail_obj)  # Create SMTP body
-    if not mail_content:
-        return
-
     contacts = [APP_CONTACTS.get(contact) for contact in mail_obj.contacts if contact is not None]
     if not contacts:
+        return
+
+    mail_content = create_mail(mail_obj)  # Create SMTP body
+    if not mail_content:
         return
 
     # Send through SMTP Gmail server
